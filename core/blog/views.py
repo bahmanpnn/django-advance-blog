@@ -1,7 +1,7 @@
 from typing import Any, Optional
 from django.db.models.query import QuerySet
 from django.shortcuts import render
-from django.views.generic import ListView
+from django.views.generic import ListView,FormView,DetailView
 from django.views.generic.base import TemplateView,RedirectView
 from django.shortcuts import redirect,get_object_or_404
 from .models import Post
@@ -91,3 +91,7 @@ class PostListView(ListView):
 #     model=Post
 #     context_object_name='posts'
 
+
+class PostDetailView(DetailView):
+    model=Post
+    context_object_name='post'

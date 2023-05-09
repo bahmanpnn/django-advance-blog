@@ -15,5 +15,7 @@ urlpatterns = [
     path('fbv-go-to-github',github_redirect,name='fbv-index'),
     path('cbv-go-to-maktabkhoone',RedirectToMaktabkhoone.as_view(),name='redirect-to-maktabkhoone-cbv'),
     path('cbv-go-to-maktabkhoone-two/<int:pk>',RedirectToMaktabkhooneTwo.as_view(),name='redirect-to-maktabkhoone-cbv-two'),
-    path('posts/',PostListView.as_view(),name='posts-list')
+    path('posts/',PostListView.as_view(),name='posts-list'),
+    path('posts/<int:pk>/',PostDetailView.as_view(),name='post-detail'),
+    
 ]
