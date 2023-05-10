@@ -1,5 +1,6 @@
 from typing import Any, Optional
 from django.db.models.query import QuerySet
+from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.generic import ListView,FormView,DetailView
 from django.views.generic.base import TemplateView,RedirectView
@@ -95,3 +96,23 @@ class PostListView(ListView):
 class PostDetailView(DetailView):
     model=Post
     context_object_name='post'
+
+
+#formview
+from .forms import ContactForm,ContactUsForm
+
+
+class PostFormView(FormView):
+    template_name='blog/contact.html'
+    form_class=ContactForm
+    success_url='/blog/posts/'
+
+
+class PostCreateFormView(FormView):
+    template_name='blog/contact.html'
+    form_class=ContactUsForm
+    success_url='/blog/posts/'
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
