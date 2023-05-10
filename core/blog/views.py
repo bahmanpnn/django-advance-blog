@@ -2,7 +2,7 @@ from typing import Any, Optional
 from django.db.models.query import QuerySet
 from django.http import HttpResponse
 from django.shortcuts import render
-from django.views.generic import ListView,FormView,DetailView
+from django.views.generic import ListView,FormView,DetailView,CreateView
 from django.views.generic.base import TemplateView,RedirectView
 from django.shortcuts import redirect,get_object_or_404
 from .models import Post
@@ -51,7 +51,7 @@ class PostListView(ListView):
     queryset=Post.objects.all()
     context_object_name='posts'
     ordering='-id'
-    paginate_by=1
+    paginate_by=4
     
     def get_queryset(self):
         QuerySet=super(PostListView,self).get_queryset()
@@ -116,3 +116,16 @@ class PostCreateFormView(FormView):
     def form_valid(self, form):
         form.save()
         return super().form_valid(form)
+
+#createview
+
+class PostCreateView(CreateView):
+    model=Post
+    fields=['auhtor','title','content','status','category','published_date']
+    success_url='/blog/posts/'
+
+
+class PostCreateViewForm(CreateView):
+    model=Post
+    form_class=ContactUsForm
+    success_url='/blog/posts/'
