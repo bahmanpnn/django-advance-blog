@@ -13,6 +13,7 @@
         <a href='{% url 'blog:post-detail' pk=post.pk %}'>
             <h1>{{post.title}}</h1>
         </a>
+        <p>{{post.auhtor}}</p>
         <p>{{post.content}}</p>
     {% endfor %}
     <div class="pagination">

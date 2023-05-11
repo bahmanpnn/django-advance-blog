@@ -1,5 +1,6 @@
 from typing import Any, Optional
 from django.db.models.query import QuerySet
+from django.forms.models import BaseModelForm
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.generic import ListView,FormView,DetailView,CreateView
@@ -121,11 +122,18 @@ class PostCreateFormView(FormView):
 
 class PostCreateView(CreateView):
     model=Post
-    fields=['auhtor','title','content','status','category','published_date']
+    fields=['title','content','status','category','published_date']
     success_url='/blog/posts/'
 
+    def form_valid(self, form):
+        form.instance.auhtor = self.request.user
+        return super().form_valid(form)
 
 class PostCreateViewForm(CreateView):
     model=Post
     form_class=ContactUsForm
     success_url='/blog/posts/'
+
+    # def form_valid(self, form):
+    #     form.instance.auhtor = self.request.user
+    #     return super().form_valid(form)
