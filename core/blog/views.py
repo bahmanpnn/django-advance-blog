@@ -3,7 +3,7 @@ from django.db.models.query import QuerySet
 from django.forms.models import BaseModelForm
 from django.http import HttpResponse
 from django.shortcuts import render
-from django.views.generic import ListView,FormView,DetailView,CreateView
+from django.views.generic import ListView,FormView,DetailView,CreateView,UpdateView
 from django.views.generic.base import TemplateView,RedirectView
 from django.shortcuts import redirect,get_object_or_404
 from .models import Post
@@ -137,3 +137,14 @@ class PostCreateViewForm(CreateView):
     # def form_valid(self, form):
     #     form.instance.auhtor = self.request.user
     #     return super().form_valid(form)
+
+
+#updateview(edit)
+
+class PostEditView(UpdateView):
+    model=Post
+    form_class=ContactUsForm
+    success_url='/blog/posts/'
+    
+    # fields=['',]
+    # template_name=''

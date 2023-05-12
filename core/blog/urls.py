@@ -30,4 +30,7 @@ urlpatterns = [
     path('posts/createview/',PostCreateView.as_view(),name='post-create-view'),
     path('posts/create_view_form/',PostCreateViewForm.as_view(),name='post-create-view-two'),
     
+    #updateview
+    path('posts/<int:pk>/edit/',PostEditView.as_view(),name='post-edit'),
+    
 ]
