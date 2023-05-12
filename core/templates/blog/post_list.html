@@ -15,6 +15,12 @@
         </a>
         <p>{{post.auhtor}}</p>
         <p>{{post.content}}</p>
+        <a href='{% url 'blog:post-edit' pk=post.pk %}'>
+            <h5>edit</h5>
+        </a>
+        <a href='{% url 'blog:post-delete' pk=post.pk %}'>
+            <h5>delete</h5>
+        </a>
     {% endfor %}
     <div class="pagination">
         <span class="step-links">

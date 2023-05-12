@@ -33,4 +33,6 @@ urlpatterns = [
     #updateview
     path('posts/<int:pk>/edit/',PostEditView.as_view(),name='post-edit'),
     
+    #deleteview
+    path('posts/<int:pk>/delete/',PostDeleteView.as_view(),name='post-delete'),
 ]

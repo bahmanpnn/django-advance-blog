@@ -3,7 +3,8 @@ from django.db.models.query import QuerySet
 from django.forms.models import BaseModelForm
 from django.http import HttpResponse
 from django.shortcuts import render
-from django.views.generic import ListView,FormView,DetailView,CreateView,UpdateView
+from django.views.generic import (
+    ListView,FormView,DetailView,CreateView,UpdateView,DeleteView)
 from django.views.generic.base import TemplateView,RedirectView
 from django.shortcuts import redirect,get_object_or_404
 from .models import Post
@@ -148,3 +149,8 @@ class PostEditView(UpdateView):
     
     # fields=['',]
     # template_name=''
+
+
+class PostDeleteView(DeleteView):
+    model=Post
+    success_url='/blog/posts/'
