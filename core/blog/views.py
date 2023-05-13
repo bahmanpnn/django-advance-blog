@@ -8,9 +8,9 @@ from django.views.generic import (
 from django.views.generic.base import TemplateView,RedirectView
 from django.shortcuts import redirect,get_object_or_404
 from .models import Post
-
 #mixin
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin,PermissionRequiredMixin
+
 
 def index(request):
     name='bahman'
@@ -98,7 +98,8 @@ class PostListView(LoginRequiredMixin,ListView):
 #     context_object_name='posts'
 
 
-class PostDetailView(LoginRequiredMixin,DetailView):
+class PostDetailView(PermissionRequiredMixin,LoginRequiredMixin,DetailView):
+    permission_required='blog.view_post'
     model=Post
     context_object_name='post'
 
