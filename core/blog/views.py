@@ -1,4 +1,4 @@
-from typing import Any, Optional
+from typing import Any
 from django.db.models.query import QuerySet
 from django.forms.models import BaseModelForm
 from django.http import HttpResponse
@@ -9,6 +9,9 @@ from django.views.generic.base import TemplateView,RedirectView
 from django.shortcuts import redirect,get_object_or_404
 from .models import Post
 
+#mixin
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 def index(request):
     name='bahman'
     context={"name":name}
@@ -16,7 +19,7 @@ def index(request):
 
 ###TemplateView
 
-class IndexView(TemplateView):
+class IndexView(LoginRequiredMixin,TemplateView):
     template_name="index.html"
 
     def get_context_data(self, **kwargs):
@@ -29,14 +32,14 @@ class IndexView(TemplateView):
 def github_redirect(request):
     return redirect('https://github.com')
 
-class RedirectToMaktabkhoone(RedirectView):
+class RedirectToMaktabkhoone(LoginRequiredMixin,RedirectView):
     url='https://maktabkhooneh.org'
     # permanent=False
     # query_string=False
     # pattern_name=''
 
     
-class RedirectToMaktabkhooneTwo(RedirectView):
+class RedirectToMaktabkhooneTwo(LoginRequiredMixin,RedirectView):
     url='https://maktabkhooneh.org'
     # permanent=False
     # query_string=False
@@ -48,7 +51,7 @@ class RedirectToMaktabkhooneTwo(RedirectView):
         return super().get_redirect_url(*args, **kwargs)
 
 ####ListView
-class PostListView(ListView):
+class PostListView(LoginRequiredMixin,ListView):
     # model=Post
     queryset=Post.objects.all()
     context_object_name='posts'
@@ -95,7 +98,7 @@ class PostListView(ListView):
 #     context_object_name='posts'
 
 
-class PostDetailView(DetailView):
+class PostDetailView(LoginRequiredMixin,DetailView):
     model=Post
     context_object_name='post'
 
@@ -104,13 +107,13 @@ class PostDetailView(DetailView):
 from .forms import ContactForm,ContactUsForm
 
 
-class PostFormView(FormView):
+class PostFormView(LoginRequiredMixin,FormView):
     template_name='blog/contact.html'
     form_class=ContactForm
     success_url='/blog/posts/'
 
 
-class PostCreateFormView(FormView):
+class PostCreateFormView(LoginRequiredMixin,FormView):
     template_name='blog/contact.html'
     form_class=ContactUsForm
     success_url='/blog/posts/'
@@ -121,7 +124,7 @@ class PostCreateFormView(FormView):
 
 #createview
 
-class PostCreateView(CreateView):
+class PostCreateView(LoginRequiredMixin,CreateView):
     model=Post
     fields=['title','content','status','category','published_date']
     success_url='/blog/posts/'
@@ -130,7 +133,7 @@ class PostCreateView(CreateView):
         form.instance.auhtor = self.request.user
         return super().form_valid(form)
 
-class PostCreateViewForm(CreateView):
+class PostCreateViewForm(LoginRequiredMixin,CreateView):
     model=Post
     form_class=ContactUsForm
     success_url='/blog/posts/'
@@ -142,7 +145,7 @@ class PostCreateViewForm(CreateView):
 
 #updateview(edit)
 
-class PostEditView(UpdateView):
+class PostEditView(LoginRequiredMixin,UpdateView):
     model=Post
     form_class=ContactUsForm
     success_url='/blog/posts/'
@@ -151,6 +154,6 @@ class PostEditView(UpdateView):
     # template_name=''
 
 
-class PostDeleteView(DeleteView):
+class PostDeleteView(LoginRequiredMixin,DeleteView):
     model=Post
     success_url='/blog/posts/'
