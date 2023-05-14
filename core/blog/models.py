@@ -1,11 +1,12 @@
 from django.db import models
-from django.contrib.auth import get_user_model
+# from django.contrib.auth import get_user_model
 # from accounts.models import User
 # from django.conf import settings
+# from accounts.models import Profile
 
 #getting user model object
 
-User=get_user_model()
+# User=get_user_model()
 
 class Post(models.Model):
     '''
@@ -14,7 +15,10 @@ class Post(models.Model):
 
     # auhtor=models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     # auhtor=models.ForeignKey("User", on_delete=models.CASCADE)
-    auhtor=models.ForeignKey(User, on_delete=models.CASCADE)
+    # auhtor=models.ForeignKey(User, on_delete=models.CASCADE)
+
+    # auhtor=models.ForeignKey(Profile, on_delete=models.CASCADE)
+    auhtor=models.ForeignKey('accounts.Profile', on_delete=models.CASCADE)
     image=models.ImageField(null=True,blank=True)
     title=models.CharField(max_length=250)
     content=models.TextField()
