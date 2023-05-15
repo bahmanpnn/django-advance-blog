@@ -35,4 +35,5 @@ urlpatterns = [
     
     #deleteview
     path('posts/<int:pk>/delete/',PostDeleteView.as_view(),name='post-delete'),
+
 ]
