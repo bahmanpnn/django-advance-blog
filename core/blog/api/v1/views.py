@@ -13,12 +13,15 @@ data={
 }
 
 @api_view()
-def post_list(request):
-    return Response({'name':"avalanch"})
-
-@api_view()
 def show_data(request):
     return Response(data)
+
+@api_view()
+def post_list(request):
+    posts=Post.objects.filter(status=True)
+    serializer=PostSerializer(posts,many=True)
+    return Response(serializer.data)
+
 
 
 #way 1 is more explainable way that you understand more about codes and use try except but it has more line codes and maybe runtime!
@@ -39,6 +42,6 @@ def show_data(request):
 #way 2 for make post detailview is this method and few lines coding and handle itself all and it does not need to use try except to handle errors!
 @api_view()
 def post_detail(request,id):
-    obj=get_object_or_404(Post,pk=id)
+    obj=get_object_or_404(Post,pk=id,status=True)
     serializer=PostSerializer(obj)
     return Response(serializer.data)
