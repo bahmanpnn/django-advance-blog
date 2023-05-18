@@ -16,13 +16,34 @@ data={
 def show_data(request):
     return Response(data)
 
-@api_view()
+#compact version
+
+# @api_view(['GET','POST'])
+# def post_list(request):
+#     if request.method == 'GET':
+#         posts=Post.objects.filter(status=True)
+#         serializer=PostSerializer(posts,many=True)
+#         return Response(serializer.data)
+#     elif request.method == 'POST':
+#         serializer=PostSerializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data)
+#         else:
+#             return Response(serializer.errors)
+
+
+@api_view(['GET','POST'])
 def post_list(request):
-    posts=Post.objects.filter(status=True)
-    serializer=PostSerializer(posts,many=True)
-    return Response(serializer.data)
-
-
+    if request.method == 'GET':
+        posts=Post.objects.filter(status=True)
+        serializer=PostSerializer(posts,many=True)
+        return Response(serializer.data)
+    elif request.method == 'POST':
+        serializer=PostSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
 
 #way 1 is more explainable way that you understand more about codes and use try except but it has more line codes and maybe runtime!
 # @api_view()
