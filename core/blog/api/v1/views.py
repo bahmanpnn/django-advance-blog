@@ -61,8 +61,14 @@ def post_list(request):
 
 
 #way 2 for make post detailview is this method and few lines coding and handle itself all and it does not need to use try except to handle errors!
-@api_view()
+@api_view(['GET','PUT'])
 def post_detail(request,id):
     obj=get_object_or_404(Post,pk=id,status=True)
-    serializer=PostSerializer(obj)
-    return Response(serializer.data)
+    if request.method == 'GET':
+        serializer=PostSerializer(obj)
+        return Response(serializer.data)
+    elif request.method == 'PUT':
+        serializer=PostSerializer(obj,data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
