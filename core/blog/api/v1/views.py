@@ -1,4 +1,5 @@
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view,permission_classes
+from rest_framework.permissions import IsAuthenticatedOrReadOnly,IsAuthenticated,IsAdminUser
 from rest_framework.response import Response
 from .serializers import PostSerializer
 from rest_framework import status
@@ -16,7 +17,6 @@ data={
 def show_data(request):
     return Response(data)
 
-#compact version
 
 # @api_view(['GET','POST'])
 # def post_list(request):
@@ -33,7 +33,9 @@ def show_data(request):
 #             return Response(serializer.errors)
 
 
+#compact version
 @api_view(['GET','POST'])
+@permission_classes([IsAuthenticatedOrReadOnly])
 def post_list(request):
     if request.method == 'GET':
         posts=Post.objects.filter(status=True)
@@ -61,7 +63,8 @@ def post_list(request):
 
 
 #way 2 for make post detailview is this method and few lines coding and handle itself all and it does not need to use try except to handle errors!
-@api_view(['GET','PUT'])
+@api_view(['GET','PUT','DELETE'])
+@permission_classes([IsAuthenticated])
 def post_detail(request,id):
     obj=get_object_or_404(Post,pk=id,status=True)
     if request.method == 'GET':
@@ -72,3 +75,6 @@ def post_detail(request,id):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
+    elif request.method == 'DELETE':
+        obj.delete()
+        return Response({'detail':'post deleted'},status=204)
