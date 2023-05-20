@@ -5,4 +5,5 @@ from .views import *
 
 urlpatterns = [
     path('posts/',PostList.as_view(),name='postlist-apiview'),
+    path('posts/<int:pk>/',PostDetail.as_view(),name='post-detail-apiview'),
 ]
