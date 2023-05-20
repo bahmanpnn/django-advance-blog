@@ -38,6 +38,9 @@ urlpatterns = [
     ######
     
     #api url
-    path('api/v1/',include('blog.api.v1.urls'))
+    #function base views
+    path('api/v1/',include('blog.api.v1.urls')),
 
+    #class base views
+    path('api/v2/',include('blog.api.v2.urls')),
 ]
