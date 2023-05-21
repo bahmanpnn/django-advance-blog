@@ -1,14 +1,15 @@
-from rest_framework.decorators import permission_classes
+# from rest_framework.decorators import permission_classes
+# from rest_framework import status
 from rest_framework.permissions import IsAuthenticatedOrReadOnly,IsAuthenticated,IsAdminUser
 from rest_framework.response import Response
 from .serializers import PostSerializer
-from rest_framework import status
 from ...models import Post
 # from blog.models import Post
 from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
-from rest_framework.generics import GenericAPIView,ListAPIView,ListCreateAPIView
-from rest_framework import mixins
+from rest_framework.generics import ListCreateAPIView,RetrieveUpdateDestroyAPIView
+# from rest_framework.generics import GenericAPIView,ListAPIView
+# from rest_framework import mixins
 
 """
 class PostList(APIView):
@@ -102,26 +103,59 @@ class PostList(ListCreateAPIView):
     
 
 
-class PostDetail(APIView):
+# class PostDetail(APIView):
+#     permission_classes=(IsAuthenticatedOrReadOnly,)
+#     serializer_class=PostSerializer
+
+#     def get(self,request,pk):
+#         obj=get_object_or_404(Post,pk=pk,status=True)
+#         # serializer=PostSerializer(obj)
+#         serializer=self.serializer_class(obj)
+#         return Response(serializer.data,status=200)
+    
+#     def put(self,request,pk):
+#         obj=get_object_or_404(Post,pk=pk,status=True)
+#         serializer=self.serializer_class(obj,data=request.data)
+#         serializer.is_valid(raise_exception=True)
+#         serializer.save()
+#         return Response(serializer.data)
+    
+#     def delete(self,request,pk):
+#         obj=get_object_or_404(Post,pk=pk,status=True)
+#         obj.delete()
+#         return Response({'detail':'item deleted successfully'},status=204)
+
+
+# class PostDetail(GenericAPIView):
+#     permission_classes=(IsAuthenticatedOrReadOnly,)
+#     serializer_class=PostSerializer
+
+#     def get(self,request,pk):
+#         obj=get_object_or_404(Post,pk=pk,status=True)
+#         # serializer=PostSerializer(obj)
+#         serializer=self.serializer_class(obj)
+#         return Response(serializer.data,status=200)
+
+
+# class PostDetail(GenericAPIView,mixins.RetrieveModelMixin,mixins.UpdateModelMixin,mixins.DestroyModelMixin):
+#     permission_classes=(IsAuthenticatedOrReadOnly,)
+#     serializer_class=PostSerializer
+#     query_set=queryset=Post.objects.filter(status=True)  ==>we can use get_object_model(?) method and override it instead of queryset
+#     # lookup_field='id'  ==>if you set url with pk it does not need to set this parametr because by default this mixin search pk not id
+
+#     def get(self,request,*args,**kwargs):
+#         return self.retrieve(request,*args,**kwargs)
+    
+#     def put(self,request,*args,**kwargs):
+#         return self.update(request,*args,**kwargs)
+    
+#     def delete(self,request,*args,**kwargs):
+#         return self.destroy(request,*args,**kwargs)
+
+class PostDetail(RetrieveUpdateDestroyAPIView):
     permission_classes=(IsAuthenticatedOrReadOnly,)
     serializer_class=PostSerializer
+    query_set=queryset=Post.objects.filter(status=True)
+    # lookup_field='id'
 
-    def get(self,request,pk):
-        obj=get_object_or_404(Post,pk=pk,status=True)
-        # serializer=PostSerializer(obj)
-        serializer=self.serializer_class(obj)
-        return Response(serializer.data,status=200)
-    
-    def put(self,request,pk):
-        obj=get_object_or_404(Post,pk=pk,status=True)
-        serializer=self.serializer_class(obj,data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data)
-    
-    def delete(self,request,pk):
-        obj=get_object_or_404(Post,pk=pk,status=True)
-        obj.delete()
-        return Response({'detail':'item deleted successfully'},status=204)
-    
 
