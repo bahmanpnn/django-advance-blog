@@ -8,6 +8,7 @@ from ...models import Post
 from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.generics import ListCreateAPIView,RetrieveUpdateDestroyAPIView
+from rest_framework import viewsets
 # from rest_framework.generics import GenericAPIView,ListAPIView
 # from rest_framework import mixins
 
@@ -103,59 +104,87 @@ class PostList(ListCreateAPIView):
     
 
 
-# class PostDetail(APIView):
-#     permission_classes=(IsAuthenticatedOrReadOnly,)
-#     serializer_class=PostSerializer
+"""
+class PostDetail(APIView):
+    permission_classes=(IsAuthenticatedOrReadOnly,)
+    serializer_class=PostSerializer
 
-#     def get(self,request,pk):
-#         obj=get_object_or_404(Post,pk=pk,status=True)
-#         # serializer=PostSerializer(obj)
-#         serializer=self.serializer_class(obj)
-#         return Response(serializer.data,status=200)
+    def get(self,request,pk):
+        obj=get_object_or_404(Post,pk=pk,status=True)
+        # serializer=PostSerializer(obj)
+        serializer=self.serializer_class(obj)
+        return Response(serializer.data,status=200)
     
-#     def put(self,request,pk):
-#         obj=get_object_or_404(Post,pk=pk,status=True)
-#         serializer=self.serializer_class(obj,data=request.data)
-#         serializer.is_valid(raise_exception=True)
-#         serializer.save()
-#         return Response(serializer.data)
+    def put(self,request,pk):
+        obj=get_object_or_404(Post,pk=pk,status=True)
+        serializer=self.serializer_class(obj,data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
     
-#     def delete(self,request,pk):
-#         obj=get_object_or_404(Post,pk=pk,status=True)
-#         obj.delete()
-#         return Response({'detail':'item deleted successfully'},status=204)
+    def delete(self,request,pk):
+        obj=get_object_or_404(Post,pk=pk,status=True)
+        obj.delete()
+        return Response({'detail':'item deleted successfully'},status=204)
 
 
-# class PostDetail(GenericAPIView):
-#     permission_classes=(IsAuthenticatedOrReadOnly,)
-#     serializer_class=PostSerializer
+class PostDetail(GenericAPIView):
+    permission_classes=(IsAuthenticatedOrReadOnly,)
+    serializer_class=PostSerializer
 
-#     def get(self,request,pk):
-#         obj=get_object_or_404(Post,pk=pk,status=True)
-#         # serializer=PostSerializer(obj)
-#         serializer=self.serializer_class(obj)
-#         return Response(serializer.data,status=200)
+    def get(self,request,pk):
+        obj=get_object_or_404(Post,pk=pk,status=True)
+        # serializer=PostSerializer(obj)
+        serializer=self.serializer_class(obj)
+        return Response(serializer.data,status=200)
 
 
-# class PostDetail(GenericAPIView,mixins.RetrieveModelMixin,mixins.UpdateModelMixin,mixins.DestroyModelMixin):
-#     permission_classes=(IsAuthenticatedOrReadOnly,)
-#     serializer_class=PostSerializer
-#     query_set=queryset=Post.objects.filter(status=True)  ==>we can use get_object_model(?) method and override it instead of queryset
-#     # lookup_field='id'  ==>if you set url with pk it does not need to set this parametr because by default this mixin search pk not id
+class PostDetail(GenericAPIView,mixins.RetrieveModelMixin,mixins.UpdateModelMixin,mixins.DestroyModelMixin):
+    permission_classes=(IsAuthenticatedOrReadOnly,)
+    serializer_class=PostSerializer
+    query_set=queryset=Post.objects.filter(status=True)  ==>we can use get_object_model(?) method and override it instead of queryset
+    # lookup_field='id'  ==>if you set url with pk it does not need to set this parametr because by default this mixin search pk not id
 
-#     def get(self,request,*args,**kwargs):
-#         return self.retrieve(request,*args,**kwargs)
+    def get(self,request,*args,**kwargs):
+        return self.retrieve(request,*args,**kwargs)
     
-#     def put(self,request,*args,**kwargs):
-#         return self.update(request,*args,**kwargs)
-    
-#     def delete(self,request,*args,**kwargs):
-#         return self.destroy(request,*args,**kwargs)
+    def put(self,request,*args,**kwargs):
+        return self.update(request,*args,**kwargs)
+
+    def delete(self,request,*args,**kwargs):
+        return self.destroy(request,*args,**kwargs)
+"""
 
 class PostDetail(RetrieveUpdateDestroyAPIView):
     permission_classes=(IsAuthenticatedOrReadOnly,)
     serializer_class=PostSerializer
     query_set=queryset=Post.objects.filter(status=True)
-    # lookup_field='id'
+    # lookup_field='id' 
 
 
+class PostViewSet(viewsets.ViewSet):
+    permission_classes=(IsAuthenticatedOrReadOnly,)
+    serializer_class=PostSerializer
+    queryset=Post.objects.filter(status=True)
+
+    def list(self,request):
+        serializer=self.serializer_class(self.queryset,many=True)
+        return Response(serializer.data,status=200)
+    
+    def retrieve(self,request,pk=None):
+        post_obj=get_object_or_404(self.queryset,pk=pk)
+        serializer=self.serializer_class(post_obj)
+        return Response(serializer.data,status=200)
+    
+    def create(self,request):
+        pass
+
+    def partial_update(self,request):
+        pass
+
+    def update(self,request):
+        pass
+
+    def destroy(self,request):
+        pass
+    
