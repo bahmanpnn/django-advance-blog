@@ -2,8 +2,8 @@
 # from rest_framework import status
 from rest_framework.permissions import IsAuthenticatedOrReadOnly,IsAuthenticated,IsAdminUser
 from rest_framework.response import Response
-from .serializers import PostSerializer
-from ...models import Post
+from .serializers import PostSerializer,CategorySerializer
+from ...models import Post,Category
 # from blog.models import Post
 from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
@@ -188,3 +188,13 @@ class PostViewSet(viewsets.ViewSet):
     def destroy(self,request):
         pass
     
+class PostModelViewSet(viewsets.ModelViewSet):
+    permission_classes=(IsAuthenticatedOrReadOnly,)
+    serializer_class=PostSerializer
+    queryset=Post.objects.filter(status=True)
+
+
+class CategoryModelViewSet(viewsets.ModelViewSet):
+    permission_classes=(IsAuthenticatedOrReadOnly,)
+    serializer_class=CategorySerializer
+    queryset=Category.objects.all()
