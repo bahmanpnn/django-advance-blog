@@ -1,11 +1,21 @@
+#standard libraries
+
+# core django
 from django.urls import path, include
-from .views import *
+
+# thirdparty packages and apps
 from rest_framework import routers
+
+# from app and project
+from .views import *
+
+
 
 # app_name='api-v1'
 
-
+# router=routers.SimpleRouter()
 router=routers.DefaultRouter()
+
 router.register('post',PostViewSet,basename='router-post-viewset')
 router.register('post_modelviewset',PostModelViewSet,basename='router-post-model-viewset')
 router.register('category',CategoryModelViewSet,basename='router-category-model-viewset')

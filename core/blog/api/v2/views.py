@@ -1,16 +1,24 @@
-# from rest_framework.decorators import permission_classes
-# from rest_framework import status
+#standard libraries
+
+# core django libraries
+from django.shortcuts import get_object_or_404
+
+# third party packages
 from rest_framework.permissions import IsAuthenticatedOrReadOnly,IsAuthenticated,IsAdminUser
 from rest_framework.response import Response
+from rest_framework.generics import ListCreateAPIView,RetrieveUpdateDestroyAPIView
+from rest_framework import viewsets
+from rest_framework.decorators import action
+# from rest_framework.views import APIView
+# from rest_framework.generics import GenericAPIView,ListAPIView
+# from rest_framework import mixins
+# from rest_framework.decorators import permission_classes
+# from rest_framework import status
+
+# from app and project
 from .serializers import PostSerializer,CategorySerializer
 from ...models import Post,Category
 # from blog.models import Post
-from django.shortcuts import get_object_or_404
-from rest_framework.views import APIView
-from rest_framework.generics import ListCreateAPIView,RetrieveUpdateDestroyAPIView
-from rest_framework import viewsets
-# from rest_framework.generics import GenericAPIView,ListAPIView
-# from rest_framework import mixins
 
 """
 class PostList(APIView):
@@ -193,6 +201,9 @@ class PostModelViewSet(viewsets.ModelViewSet):
     serializer_class=PostSerializer
     queryset=Post.objects.filter(status=True)
 
+    @action(methods=['get'],detail=False)
+    def send_ok(self,request):
+        return Response({'detail':'it is ok! :))'})
 
 class CategoryModelViewSet(viewsets.ModelViewSet):
     permission_classes=(IsAuthenticatedOrReadOnly,)
