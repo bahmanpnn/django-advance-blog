@@ -34,6 +34,17 @@ class Post(models.Model):
     def __str__(self):
         return self.title
     
+    def content_snippet(self):
+        """
+        this method is return snippet of content and use in serializer to use in postlist serializer
+        to user see complete content in post detail page
+        """
+        
+        return self.content[0:3]
+    
+    def get_absolute_url(self):
+        return reverse("blog:api-v2:router-post-viewset-detail", kwargs={"pk": self.pk})
+    
     
     
 class Category(models.Model):
