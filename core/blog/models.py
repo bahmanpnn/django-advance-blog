@@ -42,8 +42,8 @@ class Post(models.Model):
         
         return self.content[0:3]
     
-    def get_absolute_url(self):
-        return reverse("blog:api-v2:router-post-viewset-detail", kwargs={"pk": self.pk})
+    def get_absolute_api_url(self):
+        return reverse("blog:api-v2:router-post-model-viewset-detail", kwargs={"pk": self.pk})
     
     
     

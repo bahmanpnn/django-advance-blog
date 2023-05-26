@@ -11,7 +11,7 @@ from .views import *
 
 
 
-# app_name='api-v1'
+app_name='api-v2'
 
 # router=routers.SimpleRouter()
 router=routers.DefaultRouter()

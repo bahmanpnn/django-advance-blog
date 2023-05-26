@@ -12,14 +12,14 @@ class PostSerializer(serializers.ModelSerializer):
     
         #extra field that have connection with request and its better to all of proccessing of these objects be in serializer to handle better
     # category=serializers.SlugRelatedField(many=False,slug_field='name',read_only=True)
-    category=serializers.SlugRelatedField(many=False,slug_field='name',queryset=Category.objects.all())
+    # category=serializers.SlugRelatedField(many=False,slug_field='name',queryset=Category.objects.all())
 
     abs_url=serializers.SerializerMethodField(method_name='get_abs_url')
 
     class Meta:
         model=Post
         # fields='__all__'
-        fields=['id','auhtor','category','status','title','content','created_date','published_date','snippet','realtive_url','abs_url']
+        fields=['id','auhtor','category','image','status','title','content','created_date','published_date','snippet','relative_url','abs_url']
         read_only_fields=['status']
 
 
@@ -29,6 +29,20 @@ class PostSerializer(serializers.ModelSerializer):
         '''
         req=self.context.get('request')
         return req.build_absolute_uri(obj.pk)
+    
+    def to_representation(self, instance):
+        rep=super().to_representation(instance)
+        request=self.context.get('request')
+
+        if request.parser_context.get('kwargs').get('pk'):
+            rep.pop('snippet')
+            rep.pop('abs_url')
+            rep.pop('relative_url')
+        else:
+            rep.pop('content')
+
+        rep['category']=CategorySerializer(instance.category).data
+        return rep
 
 
 class CategorySerializer(serializers.ModelSerializer):
