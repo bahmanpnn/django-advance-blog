@@ -18,6 +18,7 @@ from rest_framework.decorators import action
 # from app and project
 from .serializers import PostSerializer,CategorySerializer
 from ...models import Post,Category
+from .permissions import *
 # from blog.models import Post
 
 """
@@ -197,7 +198,7 @@ class PostViewSet(viewsets.ViewSet):
         pass
     
 class PostModelViewSet(viewsets.ModelViewSet):
-    permission_classes=(IsAuthenticatedOrReadOnly,)
+    permission_classes=(IsAuthenticatedOrReadOnly,IsAuthorOrReadOnly)
     serializer_class=PostSerializer
     queryset=Post.objects.filter(status=True)
 

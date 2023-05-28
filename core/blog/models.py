@@ -45,6 +45,14 @@ class Post(models.Model):
     def get_absolute_api_url(self):
         return reverse("blog:api-v2:router-post-model-viewset-detail", kwargs={"pk": self.pk})
     
+    def get_post_author(self):
+        """
+        Post(classname)-->author(1)-->Profile(classname)-->user(2)-->User(classname)-->email
+        so just dont usee class names
+        """
+
+        return self.auhtor.user.email 
+    
     
     
 class Category(models.Model):

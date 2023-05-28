@@ -9,6 +9,7 @@ class PostSerializer(serializers.ModelSerializer):
 
     snippet=serializers.ReadOnlyField(source='content_snippet')
     relative_url=serializers.URLField(source='get_absolute_api_url',read_only=True)
+    auhtor=serializers.ReadOnlyField(source='get_post_author')
     
         #extra field that have connection with request and its better to all of proccessing of these objects be in serializer to handle better
     # category=serializers.SlugRelatedField(many=False,slug_field='name',read_only=True)
@@ -20,7 +21,7 @@ class PostSerializer(serializers.ModelSerializer):
         model=Post
         # fields='__all__'
         fields=['id','auhtor','category','image','status','title','content','created_date','published_date','snippet','relative_url','abs_url']
-        read_only_fields=['status','auhtor']
+        read_only_fields=['status']
 
 
     def get_abs_url(self,obj):
