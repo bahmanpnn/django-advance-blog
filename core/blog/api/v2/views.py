@@ -20,6 +20,7 @@ from rest_framework.filters import SearchFilter,OrderingFilter
 from .serializers import PostSerializer,CategorySerializer
 from ...models import Post,Category
 from .permissions import *
+from .pagination import DefaultPagination,MyCustomPagination
 # from blog.models import Post
 
 """
@@ -208,6 +209,7 @@ class PostModelViewSet(viewsets.ModelViewSet):
     filterset_fields=['category','auhtor','status']
     search_fields=['title','content']  # '=' means exactly be that field,'^' starts with that and '$' means regex search 
     
+    pagination_class=MyCustomPagination
 
     @action(methods=['get'],detail=False)
     def send_ok(self,request):
