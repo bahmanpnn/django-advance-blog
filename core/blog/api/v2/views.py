@@ -2,13 +2,14 @@
 
 # core django libraries
 from django.shortcuts import get_object_or_404
-
 # third party packages
 from rest_framework.permissions import IsAuthenticatedOrReadOnly,IsAuthenticated,IsAdminUser
 from rest_framework.response import Response
 from rest_framework.generics import ListCreateAPIView,RetrieveUpdateDestroyAPIView
 from rest_framework import viewsets
 from rest_framework.decorators import action
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter,OrderingFilter
 # from rest_framework.views import APIView
 # from rest_framework.generics import GenericAPIView,ListAPIView
 # from rest_framework import mixins
@@ -201,6 +202,12 @@ class PostModelViewSet(viewsets.ModelViewSet):
     permission_classes=(IsAuthenticatedOrReadOnly,IsAuthorOrReadOnly)
     serializer_class=PostSerializer
     queryset=Post.objects.filter(status=True)
+
+    # filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
+    filter_backends=[DjangoFilterBackend,SearchFilter,OrderingFilter]
+    filterset_fields=['category','auhtor','status']
+    search_fields=['title','content']  # '=' means exactly be that field,'^' starts with that and '$' means regex search 
+    
 
     @action(methods=['get'],detail=False)
     def send_ok(self,request):
