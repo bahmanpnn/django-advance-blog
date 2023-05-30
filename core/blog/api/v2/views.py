@@ -206,9 +206,11 @@ class PostModelViewSet(viewsets.ModelViewSet):
 
     # filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
     filter_backends=[DjangoFilterBackend,SearchFilter,OrderingFilter]
-    filterset_fields=['category','auhtor','status']
+    # filterset_fields=['category','auhtor','status'] == filterset_fields={'category':['exact'],'auhtor':['exact'],'status':['exact']}
+    filterset_fields={'category':['exact','in'],'auhtor':['exact','in'],'status':['exact']}
     search_fields=['title','content']  # '=' means exactly be that field,'^' starts with that and '$' means regex search 
-    
+    ordering_fields=['published_date']
+
     pagination_class=MyCustomPagination
 
     @action(methods=['get'],detail=False)
