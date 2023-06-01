@@ -26,7 +26,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
     path('blog/',include('blog.urls')),
-    path('accounts/',include('django.contrib.auth.urls')),
+    path('accounts/',include('accounts.urls')),
     path('api/',include('api.urls')),
     #api-doc
     path('api-docs/',include_docs_urls(title='api docs')),
