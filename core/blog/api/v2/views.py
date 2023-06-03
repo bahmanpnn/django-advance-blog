@@ -200,6 +200,7 @@ class PostViewSet(viewsets.ViewSet):
         pass
     
 class PostModelViewSet(viewsets.ModelViewSet):
+    # permission_classes=(IsAuthenticated,IsAuthorOrReadOnly)
     permission_classes=(IsAuthenticatedOrReadOnly,IsAuthorOrReadOnly)
     serializer_class=PostSerializer
     queryset=Post.objects.filter(status=True)

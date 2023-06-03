@@ -1,5 +1,11 @@
 from django.urls import path
 from .views import *
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+    TokenVerifyView,
+)
+
 # from rest_framework.authtoken.views import ObtainAuthToken
 
 app_name='api-v1'
@@ -17,7 +23,13 @@ urlpatterns = [
     # path('api-token-auth/', views.obtain_auth_token)
 
     # logout(destroy) token
-    path('token/logout/',CustomDestroyAuthToken.as_view(),name='custom-token-logout')
+    path('token/logout/',CustomDestroyAuthToken.as_view(),name='custom-token-logout'),
 
     #login jwt
+    path('jwt/create/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('jwt/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('jwt/verify/', TokenVerifyView.as_view(), name='token_verify'),
+
 ]
+# docker-compose exec backend sh -c "pip install django==4.0 djangorestframework==3.13"
+
