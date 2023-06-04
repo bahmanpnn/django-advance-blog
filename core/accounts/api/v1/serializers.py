@@ -5,8 +5,8 @@ from django.utils.translation import gettext_lazy as _
 
 #thirdparty
 from rest_framework import serializers
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
-from rest_framework import serializers
 #project
 from ...models import User
 
@@ -76,3 +76,30 @@ class CustomAuthTokenSerializer(serializers.Serializer):
         attrs['user'] = user
         return attrs
 
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    def validate(self,attrs):
+        validated_data=super().validate(attrs)
+        validated_data['email']=self.user.email
+        validated_data['user_id']=self.user.id
+        return validated_data
+
+
+class ChangePasswordSerializer(serializers.Serializer):
+    old_password=serializers.CharField(required=True)
+    new_password=serializers.CharField(required=True)
+    new_password_one=serializers.CharField(required=True)
+
+    def validate(self, attrs):
+
+        #this condition is for checking password and second password is equal or not!
+        if attrs.get('new_password') != attrs.get('new_password_one'):
+            raise serializers.ValidationError({'detail':'passwords does not match!!'})
+        
+        #try except is for checking password complexity
+        try:
+            validate_password(attrs.get('new_password'))
+        except exceptions.ValidationError as e:
+            raise serializers.ValidationError({'new_password':list(e.messages)})
+
+        return super().validate(attrs)

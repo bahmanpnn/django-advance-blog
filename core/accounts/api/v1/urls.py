@@ -16,6 +16,8 @@ urlpatterns = [
     # path('token/login/', ObtainAuthToken.as_view(),name='token-login'),
     
     #change password
+    path('change_password/',ChangePasswordAPIView.as_view(),name='change-password'),
+    
     #reset password
     
     #login token
@@ -29,6 +31,9 @@ urlpatterns = [
     path('jwt/create/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('jwt/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('jwt/verify/', TokenVerifyView.as_view(), name='token_verify'),
+
+    #custom jwt
+    path('jwt/custom/create/',CustomTokenObtainPairView.as_view(), name='custom-token_obtain_pair'),
 
 ]
 # docker-compose exec backend sh -c "pip install django==4.0 djangorestframework==3.13"
