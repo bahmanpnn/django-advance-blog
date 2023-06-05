@@ -1,5 +1,7 @@
+from django.contrib.auth import get_user_model
+from django.shortcuts import get_object_or_404
+
 from rest_framework import generics
-from .serializers import RegistrationSerializer,CustomAuthTokenSerializer,CustomTokenObtainPairSerializer,ChangePasswordSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
@@ -15,7 +17,15 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
     TokenVerifyView,
 )
-from django.contrib.auth import get_user_model
+
+from .serializers import (
+    RegistrationSerializer,
+    CustomAuthTokenSerializer,
+    CustomTokenObtainPairSerializer,
+    ChangePasswordSerializer,
+    ProfileSerializer
+    )
+from ...models import Profile
 
 User=get_user_model()
 
@@ -103,3 +113,25 @@ class ChangePasswordAPIView(generics.UpdateAPIView):
             self.object.save()
             return Response({'details':'password changed succussfully '},status=status.HTTP_200_OK)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+
+class ProfileAPIView(generics.RetrieveUpdateAPIView):
+    '''
+    this class need lookupfield in APIView but we dont want to use user_id.so we override get_queryset or get_object()
+    to find profile of user to prfoile detail page 
+    '''
+    serializer_class=ProfileSerializer
+    queryset=Profile.objects.all()
+    # lookup_field='pk'
+
+    # def get_object(self):
+    #     return super().get_object()
+
+    # def get_queryset(self):
+    #     return super().get_queryset()
+    
+    def get_object(self):
+        queryset=self.get_queryset()
+        obj=get_object_or_404(queryset,user=self.request.user)
+        return obj
+
+    
