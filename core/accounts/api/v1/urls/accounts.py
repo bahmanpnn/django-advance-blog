@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import *
+from ..views import *
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -8,7 +8,6 @@ from rest_framework_simplejwt.views import (
 
 # from rest_framework.authtoken.views import ObtainAuthToken
 
-app_name='api-v1'
 
 urlpatterns = [
     #registration
@@ -35,9 +34,6 @@ urlpatterns = [
     #custom jwt
     path('jwt/custom/create/',CustomTokenObtainPairView.as_view(), name='custom-token_obtain_pair'),
     
-    #user profile
-    path('profile/',ProfileAPIView.as_view(),name='profile'),
-    # path('profile/<int:pk>/',ProfileAPIView.as_view(),name='profile'), ==>for lookup_field='pk'
 ]
-# docker-compose exec backend sh -c "pip install django==4.0 djangorestframework==3.13"
 
+# docker-compose exec backend sh -c "pip install django==4.0 djangorestframework==3.13"
