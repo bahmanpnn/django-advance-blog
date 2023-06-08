@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
+from django.core.mail import send_mail
 
 from rest_framework import generics
 from rest_framework.response import Response
@@ -87,6 +88,7 @@ class CustomDestroyAuthToken(APIView):
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class=CustomTokenObtainPairSerializer
 
+
 class ChangePasswordAPIView(generics.UpdateAPIView):
     '''
     this class is for changing password with api and if we want to use patch with put method,
@@ -114,6 +116,7 @@ class ChangePasswordAPIView(generics.UpdateAPIView):
             return Response({'details':'password changed succussfully '},status=status.HTTP_200_OK)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
+
 class ProfileAPIView(generics.RetrieveUpdateAPIView):
     '''
     this class need lookupfield in APIView but we dont want to use user_id.so we override get_queryset or get_object()
@@ -134,4 +137,14 @@ class ProfileAPIView(generics.RetrieveUpdateAPIView):
         obj=get_object_or_404(queryset,user=self.request.user)
         return obj
 
-    
+
+class TestEmailSend(generics.GenericAPIView):
+    def post(self, request, *args, **kwargs):
+        send_mail(
+            'subject here',
+            'here is the message',
+            'from@example.com',
+            ['to@example.com'],
+            fail_silently=False,
+        )
+        return Response('email sent')

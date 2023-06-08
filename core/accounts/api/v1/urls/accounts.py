@@ -14,6 +14,15 @@ urlpatterns = [
     path('registration/',RegistrationAPIView.as_view(),name='registration-api'),
     # path('token/login/', ObtainAuthToken.as_view(),name='token-login'),
     
+    #test email
+    path('test-email/',TestEmailSend.as_view(),name='test-email'),
+
+    #activation
+    # path('activate/confirm/',,name=''),
+
+    #resend activation
+    # path('activate/resend/',,name=''),
+
     #change password
     path('change_password/',ChangePasswordAPIView.as_view(),name='change-password'),
     
