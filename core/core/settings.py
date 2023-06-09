@@ -151,4 +151,16 @@ REST_FRAMEWORK = {
     }
 
 #email configuration
-EMAIL_BACKEND='django.core.mail.backends.console.EmailBackend'
+# EMAIL_BACKEND='django.core.mail.backends.console.EmailBackend'
+#remmember that email_backend by default is on smtp
+
+#smtp4dev configuration
+# https://github.com/rnwood/smtp4dev/wiki/Configuring-Clients
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = False
+# host_name=localhost but we use docker-compose and must set service name that smtp4dev fake email server!
+EMAIL_HOST = 'smtp4dev'
+EMAIL_PORT = 25
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
