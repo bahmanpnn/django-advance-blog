@@ -25,3 +25,11 @@ ruamel.yaml.clib==0.2.7
 sqlparse==0.4.4
 uritemplate==4.1.1
 urllib3==2.0.2
+#general modules
+
+#third party modules
+
+#deployment modules
+
+#email third part modules
+django-mail-templated==2.6.5

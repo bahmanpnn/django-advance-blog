@@ -138,13 +138,24 @@ class ProfileAPIView(generics.RetrieveUpdateAPIView):
         return obj
 
 
+# class TestEmailSend(generics.GenericAPIView):
+#     def post(self, request, *args, **kwargs):
+#         send_mail(
+#             'subject here',
+#             'here is the message',
+#             'from@example.com',
+#             ['to@example.com'],
+#             fail_silently=False,
+#         )
+#         return Response('email sent')
+
+
+from mail_templated import send_mail
 class TestEmailSend(generics.GenericAPIView):
     def post(self, request, *args, **kwargs):
-        send_mail(
-            'subject here',
-            'here is the message',
-            'from@example.com',
-            ['to@example.com'],
-            fail_silently=False,
-        )
+        
+        send_mail('email/hello.tpl', {'user_name':'request.user.username' }, 'from@gmail.com', ['bahmanpn@gmail.com'])
+
         return Response('email sent')
+
+
