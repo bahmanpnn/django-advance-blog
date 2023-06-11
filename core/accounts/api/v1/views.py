@@ -150,12 +150,31 @@ class ProfileAPIView(generics.RetrieveUpdateAPIView):
 #         return Response('email sent')
 
 
-from mail_templated import send_mail
+# from mail_templated import send_mail
+# class TestEmailSend(generics.GenericAPIView):
+#     def post(self, request, *args, **kwargs):
+        
+#         send_mail('email/hello.tpl', {'user_name':'request.user.username' }, 'from@gmail.com', ['bahmanpn@gmail.com'])
+
+#         return Response('email sent')
+
+#changed email class to email message to more control messages and use threding
+
+
+from mail_templated import EmailMessage
+from ..utils import EmailThread
+
 class TestEmailSend(generics.GenericAPIView):
     def post(self, request, *args, **kwargs):
         
-        send_mail('email/hello.tpl', {'user_name':'request.user.username' }, 'from@gmail.com', ['bahmanpn@gmail.com'])
+        email_obj= EmailMessage('email/hello.tpl', {'user_name':'request.user.username' }, 'from@gmail.com', ['bahmanpn@gmail.com'])
+        EmailThread(email_obj).start()
 
         return Response('email sent')
+    
+
+
+
+
 
 
