@@ -23,7 +23,8 @@ from .serializers import (
     CustomAuthTokenSerializer,
     CustomTokenObtainPairSerializer,
     ChangePasswordSerializer,
-    ProfileSerializer
+    ProfileSerializer,
+    ResendActivationSerializer
     )
 from ...models import Profile
 
@@ -36,6 +37,10 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import get_user_model
 User=get_user_model()
 
+#activation and resend activation class
+import jwt
+from jwt.exceptions import ExpiredSignatureError,InvalidSignatureError
+from django.conf import settings
 
 
 class RegistrationAPIView(generics.GenericAPIView):
@@ -79,10 +84,6 @@ class RegistrationAPIView(generics.GenericAPIView):
         return str(refresh.access_token)
 
 
-import jwt
-from jwt.exceptions import ExpiredSignatureError,InvalidSignatureError
-from django.conf import settings
-
 class ActivationAPIView(APIView):
     # def get(self,request,token,*args,**kwargs):
     #     data={
@@ -116,6 +117,45 @@ class ActivationAPIView(APIView):
             return Response({'details':'sorry token has not valid!!'},status=status.HTTP_400_BAD_REQUEST)
 
         return Response({'details':'your account has been verified and activated succussfully'},status=status.HTTP_200_OK)
+
+
+class ResendActivationAPIView(generics.GenericAPIView):
+    serializer_class=ResendActivationSerializer
+
+    def post(self,request,*args, **kwargs):
+        # email=request.data.get('email')
+
+        # serializer=self.serializer_class(data=request.data)
+        serializer=ResendActivationSerializer(data=request.data)
+
+        # if serializer.is_valid():
+
+        #     # user_obj=get_object_or_404(User,email=self.email)
+        #     user_obj=serializer.validated_data['user']
+        #     activate_token_link=self.get_tokens_for_user(user_obj)
+
+        #     email_obj= EmailMessage('email/registeration.tpl', {'user_name':'request.user.username','token':activate_token_link }, 'from@gmail.com', to=[user_obj.email])
+        #     EmailThread(email_obj).start()
+
+        #     return Response({'detail':'email sent'},status=status.HTTP_200_OK)
+        
+        # else:
+        #     return Response({'detail':'request failed!!'},status=status.HTTP_400_BAD_REQUEST)
+
+        serializer.is_valid(raise_exception=True)
+        user_obj=serializer.validated_data['user']
+        activate_token_link=self.get_tokens_for_user(user_obj)
+
+        email_obj= EmailMessage('email/registeration.tpl', {'user_name':'request.user.username','token':activate_token_link }, 'from@gmail.com', to=[user_obj.email])
+        EmailThread(email_obj).start()
+
+        return Response({'detail':'email sent'},status=status.HTTP_200_OK)
+    
+    def get_tokens_for_user(self,user):
+
+        refresh = RefreshToken.for_user(user)
+        return str(refresh.access_token)
+            
 
 
 class MyCustomAuthToken(ObtainAuthToken):

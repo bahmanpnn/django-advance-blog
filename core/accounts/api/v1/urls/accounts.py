@@ -21,12 +21,13 @@ urlpatterns = [
     path('activate/confirm/<str:token>',ActivationAPIView.as_view(),name='activate-account'),
 
     #resend activation
-    # path('activate/resend/',,name=''),
+    path('activate/resend/',ResendActivationAPIView.as_view(),name='resend-activate-account'),
 
+    #reset password
+    
     #change password
     path('change_password/',ChangePasswordAPIView.as_view(),name='change-password'),
     
-    #reset password
     
     #login token
     path('token/login/', MyCustomAuthToken.as_view(),name='custom-token-login'),
