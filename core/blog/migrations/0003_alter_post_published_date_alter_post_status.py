@@ -5,20 +5,21 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('blog', '0002_alter_post_auhtor'),
+        ("blog", "0002_alter_post_auhtor"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='post',
-            name='published_date',
-            field=models.DateTimeField(default=datetime.datetime(2023, 5, 30, 6, 34, 6, 5)),
+            model_name="post",
+            name="published_date",
+            field=models.DateTimeField(
+                default=datetime.datetime(2023, 5, 30, 6, 34, 6, 5)
+            ),
         ),
         migrations.AlterField(
-            model_name='post',
-            name='status',
+            model_name="post",
+            name="status",
             field=models.BooleanField(default=True),
         ),
     ]

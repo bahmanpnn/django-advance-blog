@@ -5,9 +5,7 @@ from .. import views
 
 
 urlpatterns = [
-
-    #user profile
-    path('',views.ProfileAPIView.as_view(),name='profile'),
+    # user profile
+    path("", views.ProfileAPIView.as_view(), name="profile"),
     # path('<int:pk>/',ProfileAPIView.as_view(),name='profile'), ==>for lookup_field='pk'
-
 ]

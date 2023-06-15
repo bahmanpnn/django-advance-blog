@@ -5,15 +5,16 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('blog', '0003_alter_post_published_date_alter_post_status'),
+        ("blog", "0003_alter_post_published_date_alter_post_status"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='post',
-            name='published_date',
-            field=models.DateTimeField(default=datetime.datetime(2023, 6, 4, 9, 28, 2, 255541)),
+            model_name="post",
+            name="published_date",
+            field=models.DateTimeField(
+                default=datetime.datetime(2023, 6, 4, 9, 28, 2, 255541)
+            ),
         ),
     ]

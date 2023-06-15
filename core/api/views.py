@@ -6,4 +6,4 @@ from rest_framework.response import Response
 
 @api_view()
 def api_post_list_view(request):
-    return Response({'name':"bahman"})
+    return Response({"name": "bahman"})
