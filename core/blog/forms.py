@@ -19,3 +19,16 @@ class ContactUsForm(forms.ModelForm):
             "published_date",
         ]
         # exclude=['image','created_date','updated_date']
+
+
+class PostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = [
+            # "auhtor",
+            "category",
+            "title",
+            "content",
+            "status",
+            "published_date",
+        ]
