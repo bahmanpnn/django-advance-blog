@@ -15,6 +15,7 @@ urlpatterns = [
         name="cbv-index",
     ),
     path("my_cbv_index", IndexView.as_view(), name="my-cbv-index"),
+    path("simple_cbv_index", SimpleIndexView.as_view(), name="simple-cbv-index"),
     # redirect
     path(
         "go-to-github",
